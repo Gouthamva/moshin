@@ -2,104 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Enhanced viewport settings for mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Moshin Pharmacy Library</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet>
-    <style>
-        /* Previous CSS remains the same until media queries */
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .header {
-                padding: 2rem 1rem;
-                border-radius: 0;
-            }
-
-            .header h1 {
-                font-size: 1.75rem;
-            }
-
-            .header p {
-                font-size: 0.9rem;
-            }
-
-            .search-container {
-                margin: -2rem auto 3rem;
-                padding: 0 1rem;
-            }
-
-            .search-input {
-                font-size: 1rem;
-                padding: 1rem 1.5rem;
-            }
-
-            .medicine-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .medicine-card {
-                padding: 1rem;
-            }
-
-            .medicine-image {
-                height: 150px;
-            }
-
-            /* Mobile-friendly modal */
-            .modal-content {
-                width: 95%;
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-
-            .form-group {
-                margin-bottom: 1rem;
-            }
-
-            .form-input {
-                padding: 0.875rem;
-            }
-
-            /* Adjust FAB position for mobile browsers */
-            .add-medicine-section {
-                bottom: calc(2rem + env(safe-area-inset-bottom));
-                right: 1rem;
-            }
-        }
-
-        /* Additional mobile-specific adjustments */
-        @media (max-width: 480px) {
-            .header {
-                padding: 1.5rem 1rem;
-            }
-
-            .search-container {
-                margin: -1.5rem auto 2rem;
-            }
-
-            .medicine-card {
-                margin: 0 0.5rem;
-            }
-
-            .modal-content {
-                padding: 1rem;
-            }
-
-            button {
-                padding: 0.875rem !important;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="header">
-        <h1>Moshin Pharmacy library </h1>
+        <h1>Moshin Pharmacy Library</h1>
         <p>life annedhi oka zindagi ayipoyindhi</p>
     </header>
 
@@ -160,109 +70,6 @@
         </div>
     </div>
 
-    <script>
-        // Improved Data Handling
-        let medicines = JSON.parse(localStorage.getItem('medicines')) || [];
-
-        // Search with Debounce
-        let searchTimeout;
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                const searchTerm = e.target.value.toLowerCase();
-                const filteredMeds = medicines.filter(med => 
-                    med.name.toLowerCase().includes(searchTerm) ||
-                    med.use.toLowerCase().includes(searchTerm)
-                );
-                displayResults(filteredMeds);
-            }, 300);
-        });
-
-        // Modal Handling
-        const modal = document.getElementById('addModal');
-        document.getElementById('openModal').addEventListener('click', () => modal.style.display = 'flex');
-        document.getElementById('closeModal').addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.getElementById('medicineForm').reset();
-            document.getElementById('imagePreview').src = '#';
-        });
-
-        // Image Preview
-        document.getElementById('medImage').addEventListener('change', function(e) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                document.getElementById('imagePreview').src = reader.result;
-            }
-            reader.readAsDataURL(this.files[0]);
-        });
-
-        // Form Submission
-        document.getElementById('medicineForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const reader = new FileReader();
-            const imageFile = document.getElementById('medImage').files[0];
-            
-            reader.onload = function(e) {
-                const newMedicine = {
-                    id: Date.now(),
-                    name: document.getElementById('medName').value,
-                    dosage: document.getElementById('medDosage').value,
-                    administration: document.getElementById('medAdministration').value,
-                    use: document.getElementById('medUse').value,
-                    image: e.target.result
-                };
-
-                medicines.push(newMedicine);
-                localStorage.setItem('medicines', JSON.stringify(medicines));
-                displayResults(medicines);
-                modal.style.display = 'none';
-                this.reset();
-                showNotification('Medicine added successfully!');
-            }.bind(this);
-
-            reader.readAsDataURL(imageFile);
-        });
-
-        // Display Results
-        function displayResults(meds) {
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '';
-            
-            meds.forEach(med => {
-                const medCard = document.createElement('div');
-                medCard.className = 'medicine-card';
-                medCard.innerHTML = `
-                    ${med.image ? `<img src="${med.image}" class="medicine-image" alt="${med.name}">` : ''}
-                    <h3 style="margin-bottom: 0.5rem;">${med.name}</h3>
-                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
-                        <span style="background: #EFF6FF; color: var(--primary); padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.875rem;">${med.administration}</span>
-                        <span style="background: #F0FDF4; color: #15803D; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: 0.875rem;">${med.dosage}</span>
-                    </div>
-                    <p style="font-size: 0.875rem; color: #64748B;">${med.use}</p>
-                `;
-                resultsDiv.appendChild(medCard);
-            });
-        }
-
-        // Notification System
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.style.position = 'fixed';
-            notification.style.bottom = '1rem';
-            notification.style.right = '1rem';
-            notification.style.background = 'white';
-            notification.style.padding = '1rem';
-            notification.style.borderRadius = '0.5rem';
-            notification.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
-        }
-
-        // Initial Load
-        displayResults(medicines);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

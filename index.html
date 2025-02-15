@@ -124,37 +124,61 @@
 
         .modal-content {
             background: white;
-            padding: 1.5rem;
+            padding: 1rem;
             border-radius: 1rem;
-            width: 95%;
-            max-width: 100%;
-            margin: 1rem;
+            width: 90%;
+            max-width: 400px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
         }
 
-        .form-group {
-            margin-bottom: 1rem;
+        .compact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
-        .form-label {
-            display: block;
+        .compact-form .form-group {
             margin-bottom: 0.5rem;
-            font-weight: 500;
         }
 
-        .form-input {
-            width: 100%;
-            padding: 0.875rem;
-            border: 1px solid #CBD5E1;
-            border-radius: 0.5rem;
-            font-size: 1rem;
+        .compact-form .form-label {
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .compact-form .form-input {
+            padding: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .compact-form textarea {
+            min-height: 80px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            position: sticky;
+            bottom: 0;
+            background: white;
+            padding: 0.5rem 0;
+        }
+
+        .form-actions button {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.875rem;
         }
 
         .preview-image {
             max-width: 100%;
-            height: 150px;
+            height: 100px;
             object-fit: contain;
-            margin-top: 1rem;
-            border-radius: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 0.25rem;
         }
 
         @media (min-width: 768px) {
@@ -199,10 +223,10 @@
 
     <div class="modal" id="addModal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 1.5rem;">Add New Medication</h2>
-            <form id="medicineForm">
+            <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">Add Medication</h2>
+            <form id="medicineForm" class="compact-form">
                 <div class="form-group">
-                    <label class="form-label">Medicine Name</label>
+                    <label class="form-label">Name</label>
                     <input type="text" class="form-input" id="medName" required>
                 </div>
 
@@ -212,9 +236,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Administration Method</label>
+                    <label class="form-label">Method</label>
                     <select class="form-input" id="medAdministration" required>
-                        <option value="">Select Method</option>
+                        <option value="">Select</option>
                         <option>Oral</option>
                         <option>Sublingual</option>
                         <option>Topical</option>
@@ -224,19 +248,19 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Purpose/Use</label>
-                    <textarea class="form-input" id="medUse" rows="3" required></textarea>
+                    <label class="form-label">Purpose</label>
+                    <textarea class="form-input" id="medUse" rows="2" required></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Medicine Image</label>
-                    <input type="file" class="form-input" id="medImage" accept="image/*" required>
+                    <label class="form-label">Image</label>
+                    <input type="file" class="form-input" id="medImage" accept="image/*">
                     <img src="#" alt="Preview" class="preview-image" id="imagePreview">
                 </div>
 
-                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-                    <button type="submit" style="flex: 1; padding: 0.875rem; background: var(--primary); color: white; border: none; border-radius: 0.5rem; cursor: pointer;">Add Medicine</button>
-                    <button type="button" id="closeModal" style="flex: 1; padding: 0.875rem; background: #CBD5E1; border: none; border-radius: 0.5rem; cursor: pointer;">Cancel</button>
+                <div class="form-actions">
+                    <button type="submit" style="background: var(--primary); color: white; border: none; border-radius: 0.25rem;">Save</button>
+                    <button type="button" id="closeModal" style="background: #CBD5E1; border: none; border-radius: 0.25rem;">Cancel</button>
                 </div>
             </form>
         </div>
